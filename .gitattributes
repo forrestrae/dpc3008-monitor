@@ -1,0 +1,62 @@
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto eol=lf
+
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout.
+*.c text eol=lf
+*.h text eol=lf
+*.xml text eol=lf
+*.ftl text eol=lf
+*.bat text eol=lf
+*.bsh text eol=lf
+*.css text eol=lf
+*.csv text eol=lf
+*.groovy text eol=lf
+*.htm text eol=lf
+*.html text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.jsp text eol=lf
+*.log text eol=lf
+*.properties text eol=lf
+*.py text eol=lf
+*.rb text eol=lf
+*.sql text eol=lf
+*.txt text eol=lf
+*.classpath text eol=lf
+*.conf text eol=lf
+*.config text eol=lf
+*.dtd text eol=lf
+*.log text eol=lf
+*.patch text eol=lf
+*.php text eol=lf
+*.properties text eol=lf
+*.py text eol=lf
+*.rb text eol=lf
+*.txt text eol=lf
+*.xconf text eol=lf
+*.xml text eol=lf
+*.xsd text eol=lf
+*.xslt text eol=lf
+*.sh text eol=lf
+
+# Denote all files that are truly binary and should not be modified.
+*.png binary
+*.jpg binary
+*.pdf binary
+*.svg binary
+*.class binary
+*.doc binary
+*.docx binary
+*.gif binary
+*.ico binary
+*.jar binary
+*.jks binary
+*.jpe binary
+*.jpg binary
+*.xls binary
+*.xlsx binary
+*.woff binary
+*.ttf binary
+*.eot binary
+
