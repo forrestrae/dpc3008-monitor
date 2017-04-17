@@ -43,7 +43,7 @@ public class DataLogger
     static final long START = Util.getTime();
     static final long END = START + sampleTime;
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private static RrdDb rrdDb = defineRrd();
+    private static RrdDb rrdDb;
     private static Color graphWarningAreaColor = new Color(0xff, 0, 0x00, 0x80);
     private static LocalDate lastCheck = LocalDate.now();
 
@@ -134,7 +134,7 @@ public class DataLogger
     public static void main(String[] args)
     {
         System.setProperty("java.awt.headless", "true");
-        RrdDb rrdDb = defineRrd();
+        rrdDb = defineRrd();
 
         java.util.Date startTimestamp = new java.util.Date((long) START * 1000);
         java.util.Date endTimestamp = new java.util.Date((long) END * 1000);
