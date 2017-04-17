@@ -13,13 +13,16 @@ import org.rrd4j.graph.RrdGraphDef;
 
 import java.awt.*;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.SocketException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -33,15 +36,15 @@ import static org.rrd4j.DsType.GAUGE;
  */
 public class DataLogger
 {
-    private final static String cableModemUrl = "http://192.168.100.1/Docsis_system.asp";
-    private final static String rrdDatabaseFileName = "cable-modem.rrd";
-    private final static Integer numberOfDownstreamChannels = 8;
-    private final static Integer step = 3;
-    private final static Integer sampleTime = 86400;
-    private final static Integer numberOfSamples = sampleTime / step;
-    private final static Integer heartbeat = 10;
-    static final long START = Util.getTime();
-    static final long END = START + sampleTime;
+    private static String cableModemUrl;
+    private static String rrdDatabaseFileName;
+    private static Integer numberOfDownstreamChannels;
+    private static Integer step;
+    private static Integer sampleTime;
+    private static Integer heartbeat;
+    private static Integer numberOfSamples;
+    static long START;
+    static long END;
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private static RrdDb rrdDb;
     private static Color graphWarningAreaColor = new Color(0xff, 0, 0x00, 0x80);
@@ -134,15 +137,60 @@ public class DataLogger
     public static void main(String[] args)
     {
         System.setProperty("java.awt.headless", "true");
+
+        parseConfigurationFile();
+
         rrdDb = defineRrd();
 
         java.util.Date startTimestamp = new java.util.Date((long) START * 1000);
         java.util.Date endTimestamp = new java.util.Date((long) END * 1000);
 
-        System.out.println("START: " + START + ", " + startTimestamp);
-        System.out.println("END: " + END + ", " + endTimestamp);
+        System.out.println("Start: " + START + ", " + startTimestamp);
+        System.out.println("RRD Rotation: " + END + ", " + endTimestamp);
 
         final ScheduledFuture<?> loggerHandle = scheduler.scheduleAtFixedRate(logger, 0, step, SECONDS);
+    }
+
+    private static void parseConfigurationFile()
+    {
+        Properties prop = new Properties();
+        InputStream input = null;
+
+        try
+        {
+            input = new FileInputStream("config.properties");
+            prop.load(input);   // load a properties file
+
+            // get the property value and print it out
+            cableModemUrl = prop.getProperty("cableModemStatusPage");
+            rrdDatabaseFileName = prop.getProperty("rrdDatabaseFileName");
+            numberOfDownstreamChannels = Integer.valueOf(prop.getProperty("numberOfDownstreamChannels"));
+            step = Integer.valueOf(prop.getProperty("step"));
+            sampleTime = Integer.valueOf(prop.getProperty("sampleTime"));
+            heartbeat = Integer.valueOf(prop.getProperty("heartbeat"));
+
+            numberOfSamples = sampleTime / step;
+            START = Util.getTime();
+            END = START + sampleTime;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            if (input != null)
+            {
+                try
+                {
+                    input.close();
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 
