@@ -213,14 +213,13 @@ public class DataLogger
         gDef.setEndTime(Util.getTime());
         gDef.setTitle("Signal to Noise Ratio");
         gDef.setVerticalLabel("dB");
+
         //gDef.setDrawXGrid(true);
         //gDef.setDrawYGrid(true);
+
         //gDef.setRigid(true);
         //gDef.setMaxValue(41.0);
         //gDef.setMinValue(37.0);
-
-        //gDef.datasource("ch1PowerLevel", rrdDatabaseFileName, "ch1PowerLevel", MAX);
-        //gDef.line("ch1PowerLevel", Color.BLUE, "ch1 Power Level");
 
         Float line_width = 1.0F;
 
@@ -270,8 +269,10 @@ public class DataLogger
         gDef.setEndTime(Util.getTime());
         gDef.setTitle("Power Level");
         gDef.setVerticalLabel("dBmV");
+
         //gDef.setDrawXGrid(true);
         //gDef.setDrawYGrid(true);
+
         //gDef.setRigid(true);
         //gDef.setMaxValue(20.0);
         //gDef.setMinValue(-20.0);
