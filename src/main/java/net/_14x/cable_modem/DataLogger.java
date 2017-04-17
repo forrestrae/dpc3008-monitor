@@ -250,7 +250,7 @@ public class DataLogger
         gDef.datasource("ch8Snr", rrdDatabaseFileName, "ch8Snr", MAX);
         gDef.line("ch8Snr", Color.YELLOW, "Channel 8 SNR", line_width);
 
-        //gDef.area(33.0, graphWarningAreaColor, false);
+        gDef.area(33.0, graphWarningAreaColor, false);
 
         gDef.setImageFormat("png");
 
@@ -303,8 +303,8 @@ public class DataLogger
         gDef.datasource("ch8PowerLevel", rrdDatabaseFileName, "ch8PowerLevel", MAX);
         gDef.line("ch8PowerLevel", Color.YELLOW, "Channel 8 SNR", line_width);
 
-        //gDef.hspan(15.0, 20.0, graphWarningAreaColor);
-        //gDef.hspan(-20.0, -15.0, graphWarningAreaColor);
+        gDef.hspan(15.0, 20.0, graphWarningAreaColor);
+        gDef.hspan(-20.0, -15.0, graphWarningAreaColor);
 
         gDef.setImageFormat("png");
 
