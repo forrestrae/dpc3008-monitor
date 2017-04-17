@@ -14,6 +14,7 @@ import org.rrd4j.graph.RrdGraphDef;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.SocketException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -100,9 +101,12 @@ public class DataLogger
                 createSnrGraph(3600, "cable-modem_signal-to-noise-ratio-3600.png");
                 createPowerLevelGraph(3600, "cable-modem_power-level-3600.png");
             }
+            catch (SocketException e)
+            {
+                System.out.println(e.getMessage());
+            }
             catch (Exception e)
             {
-                closeRrd(rrdDb);
                 e.printStackTrace();
             }
         }
