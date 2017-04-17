@@ -12,3 +12,4 @@ target
 */*.png
 *.rrd
 */*.rrd
+*/*.xml
