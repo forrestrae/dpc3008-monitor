@@ -169,12 +169,56 @@ public class DataLogger
 
         RrdDef rrdDef = defineRrd();
 
-        java.util.Date startTimestamp = new java.util.Date((long) START * 1000);
-        java.util.Date endTimestamp = new java.util.Date((long) END * 1000);
+        // first, check if the file exists.
+        File f = new File(rrdDatabaseFileName);
+        if(f.exists() && !f.isDirectory())
+        {
+            // If it exists, open, get definition, and compare the definition with our definition defined in defineRrd().
+            try
+            {
+                rrdDb = new RrdDb(rrdDatabaseFileName);
 
-        System.out.println("Start: " + START + ", " + startTimestamp);
-        System.out.println("RRD Rotation: " + END + ", " + endTimestamp);
+                // If same open.  Otherwise, create a new one.
+                if(!rrdDb.getRrdDef().equals(rrdDef))
+                {
+                    // Definition is different, define a new RRD database.
+                    System.out.println("Definition is different, creating a new RRD file.");
+                    rrdDb = new RrdDb(rrdDef);
+                }
+                else
+                {
+                    // Definition is same, update.
+                    System.out.println("Definition is same, updating existing RRD file.");
+                }
 
+                // Log some basic starting information.
+                printTimeFromEpoch("RRD Start:    ", rrdDb.getRrdDef().getStartTime());
+                printTimeFromEpoch("RRD Rotation: ", END);
+            }
+            catch (IOException e)
+            {
+                System.out.println("Trouble opening rrd database file: " + rrdDatabaseFileName);
+                e.printStackTrace();
+                System.exit(-1);
+            }
+        }
+        else
+        {
+            // File doesn't exist, create a new one.
+            System.out.println("Definition is different, creating a new RRD file.");
+            try
+            {
+                rrdDb = new RrdDb(rrdDef);
+            }
+            catch (IOException e)
+            {
+                System.out.println("Trouble creating rrd database file: " + rrdDatabaseFileName);
+                e.printStackTrace();
+                System.exit(-1);
+            }
+        }
+
+        // All initialized, now lets schedule.
         final ScheduledFuture<?> loggerHandle = scheduler.scheduleAtFixedRate(logger, 0, step, SECONDS);
     }
 
