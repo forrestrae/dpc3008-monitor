@@ -81,6 +81,8 @@ public class DataLogger
                 Document doc = Jsoup.connect(cableModemUrl).get();
                 Element downstreamChannelTable = doc.select("body > form > div > table.dataTable > tbody > tr > td:nth-child(1) > table:nth-child(7) > tbody > tr:nth-child(3) > td.Item3 > table").get(0);
                 Elements downstreamChannelTableRows = downstreamChannelTable.select("tr");
+                Element upstreamChannelTable = doc.select("body > form > div > table.dataTable > tbody > tr > td:nth-child(1) > table:nth-child(9) > tbody > tr:nth-child(3) > td.Item3 > table").get(0);
+                Elements upstreamChannelTableRows = upstreamChannelTable.select("tr");
 
                 long time = Util.getTime();
                 printTimeFromEpoch("Sample Time: ", time);
@@ -100,6 +102,20 @@ public class DataLogger
                     channelSample.setTime(time);
                     channelSample.setValue("ch" + r + "PowerLevel", powerLevel);
                     channelSample.setValue("ch" + r + "Snr", signalToNoiseRatio);
+                }
+
+                for (int r = 1; r <= numberOfUpstreamChannels; r++) //first row is the col names so skip it.
+                {
+                    Element row = upstreamChannelTableRows.get(r);
+                    Elements cols = row.select("td");
+
+                    Integer channel = Integer.parseInt(cols.get(0).text());
+                    Float powerLevel = Float.parseFloat(cols.get(1).text());
+
+                    System.out.println("Upstream Channel: " + channel + ", Power Level: " + powerLevel);
+
+                    channelSample.setTime(time);
+                    channelSample.setValue("upCh" + r + "PowerLevel", powerLevel);
                 }
 
                 channelSample.update();
@@ -151,7 +167,7 @@ public class DataLogger
 
         parseConfigurationFile();
 
-        rrdDb = defineRrd();
+        RrdDef rrdDef = defineRrd();
 
         java.util.Date startTimestamp = new java.util.Date((long) START * 1000);
         java.util.Date endTimestamp = new java.util.Date((long) END * 1000);
@@ -216,44 +232,41 @@ public class DataLogger
     }
 
 
-    private static RrdDb defineRrd()
+    private static RrdDef defineRrd()
     {
-        // first, define the RRD
+        
+        
         RrdDef rrdDef = new RrdDef(rrdDatabaseFileName, START, step);
 
-        rrdDef.addDatasource("ch1PowerLevel", GAUGE, heartbeat, -Double.MAX_VALUE, Double.MAX_VALUE);
-        rrdDef.addDatasource("ch1Snr", GAUGE, heartbeat, -Double.MAX_VALUE, Double.MAX_VALUE);
+        rrdDef.addDatasource("ch1PowerLevel", GAUGE, heartbeat, downstreamPowerLevelMin, downstreamPowerLevelMax);
+        rrdDef.addDatasource("ch1Snr", GAUGE, heartbeat, downstreamSignalToNoiseRatioMin, downstreamSignalToNoiseRatioMax);
 
-        rrdDef.addDatasource("ch2PowerLevel", GAUGE, heartbeat, -Double.MAX_VALUE, Double.MAX_VALUE);
-        rrdDef.addDatasource("ch2Snr", GAUGE, heartbeat, -Double.MAX_VALUE, Double.MAX_VALUE);
+        rrdDef.addDatasource("ch2PowerLevel", GAUGE, heartbeat, downstreamPowerLevelMin, downstreamPowerLevelMax);
+        rrdDef.addDatasource("ch2Snr", GAUGE, heartbeat, downstreamSignalToNoiseRatioMin, downstreamSignalToNoiseRatioMax);
 
-        rrdDef.addDatasource("ch3PowerLevel", GAUGE, heartbeat, -Double.MAX_VALUE, Double.MAX_VALUE);
-        rrdDef.addDatasource("ch3Snr", GAUGE, heartbeat, -Double.MAX_VALUE, Double.MAX_VALUE);
+        rrdDef.addDatasource("ch3PowerLevel", GAUGE, heartbeat, downstreamPowerLevelMin, downstreamPowerLevelMax);
+        rrdDef.addDatasource("ch3Snr", GAUGE, heartbeat, downstreamSignalToNoiseRatioMin, downstreamSignalToNoiseRatioMax);
 
-        rrdDef.addDatasource("ch4PowerLevel", GAUGE, heartbeat, -Double.MAX_VALUE, Double.MAX_VALUE);
-        rrdDef.addDatasource("ch4Snr", GAUGE, heartbeat, -Double.MAX_VALUE, Double.MAX_VALUE);
+        rrdDef.addDatasource("ch4PowerLevel", GAUGE, heartbeat, downstreamPowerLevelMin, downstreamPowerLevelMax);
+        rrdDef.addDatasource("ch4Snr", GAUGE, heartbeat, downstreamSignalToNoiseRatioMin, downstreamSignalToNoiseRatioMax);
 
-        rrdDef.addDatasource("ch5PowerLevel", GAUGE, heartbeat, -Double.MAX_VALUE, Double.MAX_VALUE);
-        rrdDef.addDatasource("ch5Snr", GAUGE, heartbeat, -Double.MAX_VALUE, Double.MAX_VALUE);
+        rrdDef.addDatasource("ch5PowerLevel", GAUGE, heartbeat, downstreamPowerLevelMin, downstreamPowerLevelMax);
+        rrdDef.addDatasource("ch5Snr", GAUGE, heartbeat, downstreamSignalToNoiseRatioMin, downstreamSignalToNoiseRatioMax);
 
-        rrdDef.addDatasource("ch6PowerLevel", GAUGE, heartbeat, -Double.MAX_VALUE, Double.MAX_VALUE);
-        rrdDef.addDatasource("ch6Snr", GAUGE, heartbeat, -Double.MAX_VALUE, Double.MAX_VALUE);
+        rrdDef.addDatasource("ch6PowerLevel", GAUGE, heartbeat, downstreamPowerLevelMin, downstreamPowerLevelMax);
+        rrdDef.addDatasource("ch6Snr", GAUGE, heartbeat, downstreamSignalToNoiseRatioMin, downstreamSignalToNoiseRatioMax);
 
-        rrdDef.addDatasource("ch7PowerLevel", GAUGE, heartbeat, Float.MIN_VALUE, Double.NaN);
-        rrdDef.addDatasource("ch7Snr", GAUGE, heartbeat, -Double.MAX_VALUE, Double.MAX_VALUE);
+        rrdDef.addDatasource("ch7PowerLevel", GAUGE, heartbeat, downstreamPowerLevelMin, downstreamPowerLevelMax);
+        rrdDef.addDatasource("ch7Snr", GAUGE, heartbeat, downstreamSignalToNoiseRatioMin, downstreamSignalToNoiseRatioMax);
 
-        rrdDef.addDatasource("ch8PowerLevel", GAUGE, heartbeat, -Double.MAX_VALUE, Double.MAX_VALUE);
-        rrdDef.addDatasource("ch8Snr", GAUGE, heartbeat, -Double.MAX_VALUE, Double.MAX_VALUE);
+        rrdDef.addDatasource("ch8PowerLevel", GAUGE, heartbeat, downstreamPowerLevelMin, downstreamPowerLevelMax);
+        rrdDef.addDatasource("ch8Snr", GAUGE, heartbeat, downstreamSignalToNoiseRatioMin, downstreamSignalToNoiseRatioMax);
+
+        rrdDef.addDatasource("upCh1PowerLevel", GAUGE, heartbeat, upstreamPowerLevelMin, upstreamPowerLevelMax);
 
         rrdDef.addArchive(MAX, 0.5, 1, numberOfSamples);
 
-            return new RrdDb(rrdDef);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
+        return rrdDef;
     }
 
     private static void closeRrd(RrdDb rrdDb)
