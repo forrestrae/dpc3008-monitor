@@ -331,55 +331,43 @@ public class DataLogger
     {
         // then create a graph definition
         RrdGraphDef gDef = new RrdGraphDef();
-        gDef.setWidth(3840);
-        gDef.setHeight(2160);
+        setGraphDefaults(gDef);
+
         gDef.setFilename(filename);
         gDef.setStartTime(Util.getTime() - startOffset);
         gDef.setEndTime(Util.getTime());
         gDef.setTitle("Signal to Noise Ratio");
         gDef.setVerticalLabel("dB");
 
-        Float line_width = 1.0F;
-
         gDef.datasource("ch1Snr", rrdDatabaseFileName, "ch1Snr", MAX);
-        gDef.line("ch1Snr", Color.GREEN, "Channel 1 SNR", line_width);
+        gDef.line("ch1Snr", Color.GREEN, "Channel 1 SNR");
 
         gDef.datasource("ch2Snr", rrdDatabaseFileName, "ch2Snr", MAX);
-        gDef.line("ch2Snr", Color.BLUE, "Channel 2 SNR", line_width);
+        gDef.line("ch2Snr", Color.BLUE, "Channel 2 SNR");
 
         gDef.datasource("ch3Snr", rrdDatabaseFileName, "ch3Snr", MAX);
-        gDef.line("ch3Snr", Color.RED, "Channel 3 SNR", line_width);
+        gDef.line("ch3Snr", Color.RED, "Channel 3 SNR");
 
         gDef.datasource("ch4Snr", rrdDatabaseFileName, "ch4Snr", MAX);
-        gDef.line("ch4Snr", Color.CYAN, "Channel 4 SNR", line_width);
+        gDef.line("ch4Snr", Color.CYAN, "Channel 4 SNR");
 
         gDef.datasource("ch5Snr", rrdDatabaseFileName, "ch5Snr", MAX);
-        gDef.line("ch5Snr", Color.DARK_GRAY, "Channel 5 SNR", line_width);
+        gDef.line("ch5Snr", Color.DARK_GRAY, "Channel 5 SNR");
 
         gDef.datasource("ch6Snr", rrdDatabaseFileName, "ch6Snr", MAX);
-        gDef.line("ch6Snr", Color.MAGENTA, "Channel 6 SNR", line_width);
+        gDef.line("ch6Snr", Color.MAGENTA, "Channel 6 SNR");
 
         gDef.datasource("ch7Snr", rrdDatabaseFileName, "ch7Snr", MAX);
-        gDef.line("ch7Snr", Color.ORANGE, "Channel 7 SNR", line_width);
+        gDef.line("ch7Snr", Color.ORANGE, "Channel 7 SNR");
 
         gDef.datasource("ch8Snr", rrdDatabaseFileName, "ch8Snr", MAX);
-        gDef.line("ch8Snr", Color.YELLOW, "Channel 8 SNR", line_width);
+        gDef.line("ch8Snr", Color.YELLOW, "Channel 8 SNR");
 
         gDef.area(downstreamSignalToNoiseRatioWarningFloor, graphWarningAreaColor, false);
 
         //gDef.setRigid(true);
         //gDef.setMaxValue(41.0);
         //gDef.setMinValue(30.0);
-
-        gDef.setImageFormat("png");
-        gDef.setImageQuality(1.0f);
-        gDef.setAntiAliasing(true);
-
-        gDef.setValueAxis(0.5d, 1);
-
-        gDef.setFont(RrdGraphConstants.FontTag.AXIS, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphAxisFontSize));
-        gDef.setFont(RrdGraphConstants.FontTag.TITLE, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphAxisFontSize));
-        gDef.setFont(RrdGraphConstants.FontTag.UNIT, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphAxisFontSize));
 
         // then actually draw the graph
         RrdGraph graph = new RrdGraph(gDef); // will create the graph in the path specified
@@ -389,39 +377,37 @@ public class DataLogger
     {
         // then create a graph definition
         RrdGraphDef gDef = new RrdGraphDef();
-        gDef.setWidth(3840);
-        gDef.setHeight(2160);
+        setGraphDefaults(gDef);
+
         gDef.setFilename(filename);
         gDef.setStartTime(Util.getTime() - startOffset);
         gDef.setEndTime(Util.getTime());
         gDef.setTitle("Power Level");
         gDef.setVerticalLabel("dBmV");
 
-        Float line_width = 1.0F;
-
         gDef.datasource("ch1PowerLevel", rrdDatabaseFileName, "ch1PowerLevel", MAX);
-        gDef.line("ch1PowerLevel", Color.GREEN, "Channel 1 Power Level", line_width);
+        gDef.line("ch1PowerLevel", Color.GREEN, "Channel 1 Power Level");
 
         gDef.datasource("ch2PowerLevel", rrdDatabaseFileName, "ch2PowerLevel", MAX);
-        gDef.line("ch2PowerLevel", Color.BLUE, "Channel 2 SNR", line_width);
+        gDef.line("ch2PowerLevel", Color.BLUE, "Channel 2 SNR");
 
         gDef.datasource("ch3PowerLevel", rrdDatabaseFileName, "ch3PowerLevel", MAX);
-        gDef.line("ch3PowerLevel", Color.RED, "Channel 3 SNR", line_width);
+        gDef.line("ch3PowerLevel", Color.RED, "Channel 3 SNR");
 
         gDef.datasource("ch4PowerLevel", rrdDatabaseFileName, "ch4PowerLevel", MAX);
-        gDef.line("ch4PowerLevel", Color.CYAN, "Channel 4 SNR", line_width);
+        gDef.line("ch4PowerLevel", Color.CYAN, "Channel 4 SNR");
 
         gDef.datasource("ch5PowerLevel", rrdDatabaseFileName, "ch5PowerLevel", MAX);
-        gDef.line("ch5PowerLevel", Color.DARK_GRAY, "Channel 5 SNR", line_width);
+        gDef.line("ch5PowerLevel", Color.DARK_GRAY, "Channel 5 SNR");
 
         gDef.datasource("ch6PowerLevel", rrdDatabaseFileName, "ch6PowerLevel", MAX);
-        gDef.line("ch6PowerLevel", Color.MAGENTA, "Channel 6 SNR", line_width);
+        gDef.line("ch6PowerLevel", Color.MAGENTA, "Channel 6 SNR");
 
         gDef.datasource("ch7PowerLevel", rrdDatabaseFileName, "ch7PowerLevel", MAX);
-        gDef.line("ch7PowerLevel", Color.ORANGE, "Channel 7 SNR", line_width);
+        gDef.line("ch7PowerLevel", Color.ORANGE, "Channel 7 SNR");
 
         gDef.datasource("ch8PowerLevel", rrdDatabaseFileName, "ch8PowerLevel", MAX);
-        gDef.line("ch8PowerLevel", Color.YELLOW, "Channel 8 SNR", line_width);
+        gDef.line("ch8PowerLevel", Color.YELLOW, "Channel 8 SNR");
 
         gDef.hspan(downstreamPowerLevelMax, downstreamPowerLevelMax+5, graphWarningAreaColor);
         gDef.hspan(downstreamPowerLevelMin-5, downstreamPowerLevelMin, graphWarningAreaColor);
@@ -430,15 +416,24 @@ public class DataLogger
         //gDef.setMaxValue(20.0);
         //gDef.setMinValue(-20.0);
 
+        // then actually draw the graph
+        RrdGraph graph = new RrdGraph(gDef); // will create the graph in the path specified
+    }
+    
+    private static void setGraphDefaults(RrdGraphDef gDef)
+    {
+        gDef.setWidth(3840);
+        gDef.setHeight(2160);
+        
         gDef.setImageFormat("png");
         gDef.setImageQuality(1.0f);
         gDef.setAntiAliasing(true);
 
         gDef.setValueAxis(0.5d, 1);
 
-        gDef.setFont(RrdGraphConstants.FontTag.AXIS, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphAxisFontSize));
-        gDef.setFont(RrdGraphConstants.FontTag.TITLE, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphAxisFontSize));
-        gDef.setFont(RrdGraphConstants.FontTag.UNIT, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphAxisFontSize));
+        gDef.setFont(RrdGraphConstants.FontTag.AXIS, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphFontSize));
+        gDef.setFont(RrdGraphConstants.FontTag.TITLE, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphFontSize));
+        gDef.setFont(RrdGraphConstants.FontTag.UNIT, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphFontSize));
         gDef.setFont(RrdGraphConstants.FontTag.LEGEND, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphFontSize));
         gDef.setFont(RrdGraphConstants.FontTag.TITLE, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphFontSize+6));
     }
