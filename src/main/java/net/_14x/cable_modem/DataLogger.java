@@ -49,7 +49,7 @@ public class DataLogger
     private static Double downstreamSignalToNoiseRatioMin;
     private static Double upstreamPowerLevelMax;
     private static Double upstreamPowerLevelMin;
-    private static int graphAxisFontSize;
+    private static int graphFontSize;
     
     static long START;
     static long END;
@@ -250,7 +250,7 @@ public class DataLogger
             upstreamPowerLevelMax = Double.valueOf(prop.getProperty("upstreamPowerLevelMax"));
             upstreamPowerLevelMin = Double.valueOf(prop.getProperty("upstreamPowerLevelMin"));
 
-            graphAxisFontSize = Integer.valueOf(prop.getProperty("graphAxisFontSize"));
+            graphFontSize = Integer.valueOf(prop.getProperty("graphFontSize"));
 
             numberOfSamples = sampleTime / step;
             START = Util.getTime();
@@ -439,9 +439,8 @@ public class DataLogger
         gDef.setFont(RrdGraphConstants.FontTag.AXIS, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphAxisFontSize));
         gDef.setFont(RrdGraphConstants.FontTag.TITLE, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphAxisFontSize));
         gDef.setFont(RrdGraphConstants.FontTag.UNIT, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphAxisFontSize));
-
-        // then actually draw the graph
-        RrdGraph graph = new RrdGraph(gDef); // will create the graph in the path specified
+        gDef.setFont(RrdGraphConstants.FontTag.LEGEND, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphFontSize));
+        gDef.setFont(RrdGraphConstants.FontTag.TITLE, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphFontSize+6));
     }
 
 }
