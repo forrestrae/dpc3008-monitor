@@ -83,7 +83,7 @@ public class DataLogger
                 Elements downstreamChannelTableRows = downstreamChannelTable.select("tr");
 
                 long time = Util.getTime();
-                System.out.println("Sample Time: " + time);
+                printTimeFromEpoch("Sample Time: ", time);
 
                 Sample channelSample = rrdDb.createSample();
                 for (int r = 1; r <= numberOfDownstreamChannels; r++) //first row is the col names so skip it.
@@ -95,7 +95,7 @@ public class DataLogger
                     Float powerLevel = Float.parseFloat(cols.get(1).text());
                     Float signalToNoiseRatio = Float.parseFloat(cols.get(2).text());
 
-                    System.out.println("Channel: " + channel + ", Power Level: " + powerLevel + ", SNR: " + signalToNoiseRatio);
+                    System.out.println("Downstream Channel: " + channel + ", Power Level: " + powerLevel + ", SNR: " + signalToNoiseRatio);
 
                     channelSample.setTime(time);
                     channelSample.setValue("ch" + r + "PowerLevel", powerLevel);
@@ -120,6 +120,12 @@ public class DataLogger
         }
 
     };
+
+    public static void printTimeFromEpoch(String prefix, long epoch)
+    {
+        java.util.Date timestamp = new java.util.Date((long) epoch * 1000);
+        System.out.println(prefix + timestamp + " (" + epoch + ")");
+    }
 
     public static boolean isNewDay() {
         LocalDate today = LocalDate.now();
