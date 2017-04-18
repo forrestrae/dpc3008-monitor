@@ -31,9 +31,6 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.rrd4j.ConsolFun.MAX;
 import static org.rrd4j.DsType.GAUGE;
 
-/**
- * Hello world!
- */
 public class DataLogger
 {
     private static String cableModemUrl;
@@ -93,8 +90,6 @@ public class DataLogger
                 {
                     Element row = downstreamChannelTableRows.get(r);
                     Elements cols = row.select("td");
-
-                    //downstreamChannels.add(new HashMap<String, String>();
 
                     Integer channel = Integer.parseInt(cols.get(0).text());
                     Float powerLevel = Float.parseFloat(cols.get(1).text());
@@ -246,9 +241,6 @@ public class DataLogger
 
         rrdDef.addArchive(MAX, 0.5, 1, numberOfSamples);
 
-        // then, create a RrdDb from the definition and start adding data
-        try
-        {
             return new RrdDb(rrdDef);
         }
         catch (IOException e)
@@ -283,20 +275,10 @@ public class DataLogger
         gDef.setTitle("Signal to Noise Ratio");
         gDef.setVerticalLabel("dB");
 
-        //gDef.setDrawXGrid(true);
-        //gDef.setDrawYGrid(true);
-
-        //gDef.setRigid(true);
-        //gDef.setMaxValue(41.0);
-        //gDef.setMinValue(37.0);
-
         Float line_width = 1.0F;
 
         gDef.datasource("ch1Snr", rrdDatabaseFileName, "ch1Snr", MAX);
         gDef.line("ch1Snr", Color.GREEN, "Channel 1 SNR", line_width);
-
-        //gDef.datasource("ch1SnrAvg", "ch1Snr,10,TREND");
-        //gDef.line("ch1SnrAvg", Color.BLACK, "Channel 1 SNR Average", line_width);
 
         gDef.datasource("ch2Snr", rrdDatabaseFileName, "ch2Snr", MAX);
         gDef.line("ch2Snr", Color.BLUE, "Channel 2 SNR", line_width);
@@ -321,6 +303,10 @@ public class DataLogger
 
         gDef.area(downstreamSignalToNoiseRatioWarningFloor, graphWarningAreaColor, false);
 
+        //gDef.setRigid(true);
+        //gDef.setMaxValue(41.0);
+        //gDef.setMinValue(30.0);
+
         gDef.setImageFormat("png");
 
         // then actually draw the graph
@@ -338,13 +324,6 @@ public class DataLogger
         gDef.setEndTime(Util.getTime());
         gDef.setTitle("Power Level");
         gDef.setVerticalLabel("dBmV");
-
-        //gDef.setDrawXGrid(true);
-        //gDef.setDrawYGrid(true);
-
-        //gDef.setRigid(true);
-        //gDef.setMaxValue(20.0);
-        //gDef.setMinValue(-20.0);
 
         Float line_width = 1.0F;
 
@@ -374,7 +353,10 @@ public class DataLogger
 
         gDef.hspan(downstreamPowerLevelMax, downstreamPowerLevelMax+5, graphWarningAreaColor);
         gDef.hspan(downstreamPowerLevelMin-5, downstreamPowerLevelMin, graphWarningAreaColor);
-        gDef.hspan(-20.0, -15.0, graphWarningAreaColor);
+
+        //gDef.setRigid(true);
+        //gDef.setMaxValue(20.0);
+        //gDef.setMinValue(-20.0);
 
         gDef.setImageFormat("png");
 
