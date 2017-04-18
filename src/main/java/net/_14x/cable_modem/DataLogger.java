@@ -9,6 +9,7 @@ import org.rrd4j.core.RrdDef;
 import org.rrd4j.core.Sample;
 import org.rrd4j.core.Util;
 import org.rrd4j.graph.RrdGraph;
+import org.rrd4j.graph.RrdGraphConstants;
 import org.rrd4j.graph.RrdGraphDef;
 
 import java.awt.*;
@@ -371,6 +372,14 @@ public class DataLogger
         //gDef.setMinValue(30.0);
 
         gDef.setImageFormat("png");
+        gDef.setImageQuality(1.0f);
+        gDef.setAntiAliasing(true);
+
+        gDef.setValueAxis(0.5d, 1);
+
+        gDef.setFont(RrdGraphConstants.FontTag.AXIS, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphAxisFontSize));
+        gDef.setFont(RrdGraphConstants.FontTag.TITLE, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphAxisFontSize));
+        gDef.setFont(RrdGraphConstants.FontTag.UNIT, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphAxisFontSize));
 
         // then actually draw the graph
         RrdGraph graph = new RrdGraph(gDef); // will create the graph in the path specified
@@ -422,6 +431,14 @@ public class DataLogger
         //gDef.setMinValue(-20.0);
 
         gDef.setImageFormat("png");
+        gDef.setImageQuality(1.0f);
+        gDef.setAntiAliasing(true);
+
+        gDef.setValueAxis(0.5d, 1);
+
+        gDef.setFont(RrdGraphConstants.FontTag.AXIS, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphAxisFontSize));
+        gDef.setFont(RrdGraphConstants.FontTag.TITLE, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphAxisFontSize));
+        gDef.setFont(RrdGraphConstants.FontTag.UNIT, RrdGraphConstants.FontConstructor.getFont(Font.PLAIN, graphAxisFontSize));
 
         // then actually draw the graph
         RrdGraph graph = new RrdGraph(gDef); // will create the graph in the path specified
