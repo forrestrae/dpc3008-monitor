@@ -221,6 +221,14 @@ public class DataLogger
 
         // All initialized, now lets schedule.
         final ScheduledFuture<?> loggerHandle = scheduler.scheduleAtFixedRate(logger, 0, step, SECONDS);
+
+        // Add a shutdown hook.
+        Runtime.getRuntime().addShutdownHook(new Thread(() ->
+        {
+            System.out.println("Caught shutdown signal.");
+            loggerHandle.cancel(false);
+            closeRrd(rrdDb);
+        }));
     }
 
     private static void parseConfigurationFile()
