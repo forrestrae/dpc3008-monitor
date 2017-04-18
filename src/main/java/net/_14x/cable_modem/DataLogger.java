@@ -39,10 +39,20 @@ public class DataLogger
     private static String cableModemUrl;
     private static String rrdDatabaseFileName;
     private static Integer numberOfDownstreamChannels;
+    private static Integer numberOfUpstreamChannels;
     private static Integer step;
     private static Integer sampleTime;
     private static Integer heartbeat;
     private static Integer numberOfSamples;
+    private static Double downstreamPowerLevelMax;
+    private static Double downstreamPowerLevelMin;
+    private static Double downstreamSignalToNoiseRatioMax;
+    private static Double downstreamSignalToNoiseRatioWarningFloor;
+    private static Double downstreamSignalToNoiseRatioMin;
+    private static Double upstreamPowerLevelMax;
+    private static Double upstreamPowerLevelMin;
+    private static int graphAxisFontSize;
+    
     static long START;
     static long END;
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -165,9 +175,20 @@ public class DataLogger
             cableModemUrl = prop.getProperty("cableModemStatusPage");
             rrdDatabaseFileName = prop.getProperty("rrdDatabaseFileName");
             numberOfDownstreamChannels = Integer.valueOf(prop.getProperty("numberOfDownstreamChannels"));
+            numberOfUpstreamChannels = Integer.valueOf(prop.getProperty("numberOfUpstreamChannels"));
             step = Integer.valueOf(prop.getProperty("step"));
             sampleTime = Integer.valueOf(prop.getProperty("sampleTime"));
             heartbeat = Integer.valueOf(prop.getProperty("heartbeat"));
+
+            downstreamPowerLevelMax = Double.valueOf(prop.getProperty("downstreamPowerLevelMax"));
+            downstreamPowerLevelMin = Double.valueOf(prop.getProperty("downstreamPowerLevelMin"));
+            downstreamSignalToNoiseRatioMax = Double.valueOf(prop.getProperty("downstreamSignalToNoiseRatioMax"));
+            downstreamSignalToNoiseRatioWarningFloor = Double.valueOf(prop.getProperty("downstreamSignalToNoiseRatioWarningFloor"));
+            downstreamSignalToNoiseRatioMin = Double.valueOf(prop.getProperty("downstreamSignalToNoiseRatioMin"));
+            upstreamPowerLevelMax = Double.valueOf(prop.getProperty("upstreamPowerLevelMax"));
+            upstreamPowerLevelMin = Double.valueOf(prop.getProperty("upstreamPowerLevelMin"));
+
+            graphAxisFontSize = Integer.valueOf(prop.getProperty("graphAxisFontSize"));
 
             numberOfSamples = sampleTime / step;
             START = Util.getTime();
@@ -298,7 +319,7 @@ public class DataLogger
         gDef.datasource("ch8Snr", rrdDatabaseFileName, "ch8Snr", MAX);
         gDef.line("ch8Snr", Color.YELLOW, "Channel 8 SNR", line_width);
 
-        gDef.area(33.0, graphWarningAreaColor, false);
+        gDef.area(downstreamSignalToNoiseRatioWarningFloor, graphWarningAreaColor, false);
 
         gDef.setImageFormat("png");
 
@@ -351,7 +372,8 @@ public class DataLogger
         gDef.datasource("ch8PowerLevel", rrdDatabaseFileName, "ch8PowerLevel", MAX);
         gDef.line("ch8PowerLevel", Color.YELLOW, "Channel 8 SNR", line_width);
 
-        gDef.hspan(15.0, 20.0, graphWarningAreaColor);
+        gDef.hspan(downstreamPowerLevelMax, downstreamPowerLevelMax+5, graphWarningAreaColor);
+        gDef.hspan(downstreamPowerLevelMin-5, downstreamPowerLevelMin, graphWarningAreaColor);
         gDef.hspan(-20.0, -15.0, graphWarningAreaColor);
 
         gDef.setImageFormat("png");
